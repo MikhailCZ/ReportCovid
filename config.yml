@@ -1,0 +1,51 @@
+VARIABLES:
+  DB_SQL: 'D:/Python/Covid19/databases/CovidDB.db'
+  URL: 'https://api.apify.com/v2/key-value-stores/K373S4uCFR9W1K8ei/records/LATEST?disableRedirect=true'
+  HTTP_TIMEOUT: 15
+  LOG_FILE: 'D:/Python/Covid19/logs/log_{}.log'
+  LOG_FORMAT: '%(asctime)s %(message)s'
+  COMPLETE_INFO: ['totalTested', 'infected', 'recovered', 'deceased', 'hospitalized', 'active', 'critical']
+  POSITIVE_TESTED: 'totalPositiveTests'
+
+SQL_QUERIES:
+  DDL:
+    CREATE_BABIS: 'CREATE TABLE fromBabisNewspapers (
+                        id_babis INTEGER PRIMARY KEY AUTOINCREMENT,
+                        data DATE,
+                        totalInfected INTEGER,
+                        totalDeaths INTEGER,
+                        totalCured INTEGER,
+                        totalTested INTEGER
+                    );'
+    CREATE_POSITIVE_TESTS: 'CREATE TABLE TotalPositiveTest(
+                             	date_id DATE PRIMARY KEY,
+                             	value INTEGER
+                             );'
+    CREATE_REGION: 'CREATE TABLE region (
+                    	date_id DATE PRIMARY KEY,
+                    	prague INT,
+                    	stredocesky INT,
+                    	jihocesky INT,
+                    	plzensky INT,
+                    	karlovarsky INT,
+                    	ustecky INT,
+                    	liberecky INT,
+                    	kralovehradsky INT,
+                    	pardubicky INT,
+                    	vysocina INT,
+                    	jihomoravsky INT,
+                    	olomoucky INT,
+                    	zlinsky INT,
+                    	moravskoslezsky INT,
+                    	other INT
+                    );'
+
+  DML:
+    INSERT_BABIS: 'INSERT INTO fromBabisNewspapers
+                   VALUES (NULL, {}, {}, {}, {}, {})'
+    INSERT_POSITIVE_TESTS: 'INSERT OR REPLACE INTO TotalPositiveTest
+                            VALUES (?, ?)'
+    INSERT_REGION: 'INSERT INTO region
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+
+
